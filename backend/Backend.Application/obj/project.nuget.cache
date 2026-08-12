@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Il4pDt8IoGM=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\User\\Desktop\\leather-shoe-shop\\backend\\Backend.Application\\Backend.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512"
+  ],
+  "logs": []
+}
