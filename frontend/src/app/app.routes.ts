@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
-import { AdminLogin } from './pages/admin-login/admin-login';
-import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
-import { authGuard } from './guards/auth.guard';
-
-import { Checkout } from './pages/checkout/checkout';
-import { OrderSuccess } from './pages/order-success/order-success';
+import { Home } from './presentation/pages/home/home';
+import { AdminLogin } from './presentation/pages/admin-login/admin-login';
+import { AdminDashboard } from './presentation/pages/admin-dashboard/admin-dashboard';
+import { authGuard } from './core/guards/auth.guard';
+import { AdminOrders } from './presentation/pages/admin-orders/admin-orders';
+import { Checkout } from './presentation/pages/checkout/checkout';
+import { OrderSuccess } from './presentation/pages/order-success/order-success';
 
 export const routes: Routes = [
   { path: '', component: Home },

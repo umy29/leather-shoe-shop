@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../../data/services/auth';
 
 @Component({
   selector: 'app-admin-login',

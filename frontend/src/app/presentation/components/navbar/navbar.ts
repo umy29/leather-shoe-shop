@@ -1,8 +1,8 @@
 import { Component, inject, Inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Auth } from '../../services/auth';
+import { Auth } from '../../../data/services/auth';
 import { DOCUMENT } from '@angular/common';
-import { CartService } from '../../services/cart';
+import { CartService } from '../../../data/services/cart';
 
 @Component({
   selector: 'app-navbar',

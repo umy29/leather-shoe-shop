@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ShoeService } from '../../services/shoe';
-import { Shoe } from '../../models/shoe.model';
-import { CartService } from '../../services/cart';
+import { ShoeService } from '../../../data/services/shoe';
+import { Shoe } from '../../../core/domain/models/shoe.model';
+import { CartService } from '../../../data/services/cart';
 
 @Component({
   selector: 'app-home',

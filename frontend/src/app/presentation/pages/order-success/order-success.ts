@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { Order } from '../../models/order.model';
+import { Order } from '../../../core/domain/models/order.model';
 
 @Component({
   selector: 'app-order-success',

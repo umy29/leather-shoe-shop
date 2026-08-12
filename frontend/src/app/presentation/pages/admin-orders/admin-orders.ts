@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { OrderService } from '../../services/order';
-import { Order } from '../../models/order.model';
+import { OrderService } from '../../../data/services/order';
+import { Order } from '../../../core/domain/models/order.model';
 
 @Component({
   selector: 'app-admin-orders',

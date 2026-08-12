@@ -2,9 +2,9 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
-import { CartService } from '../../services/cart';
-import { OrderService } from '../../services/order';
-import { Order } from '../../models/order.model';
+import { CartService } from '../../../data/services/cart';
+import { OrderService } from '../../../data/services/order';
+import { Order } from '../../../core/domain/models/order.model';
 
 @Component({
   selector: 'app-checkout',

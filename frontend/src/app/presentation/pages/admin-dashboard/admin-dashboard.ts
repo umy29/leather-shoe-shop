@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
-import { ShoeService } from '../../services/shoe';
-import { Shoe } from '../../models/shoe.model';
+import { ShoeService } from '../../../data/services/shoe';
+import { Shoe } from '../../../core/domain/models/shoe.model';
 import { AdminOrders } from '../admin-orders/admin-orders';
 
 @Component({
