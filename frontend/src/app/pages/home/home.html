@@ -1,0 +1,80 @@
+<div class="hero">
+  <div class="hero-content">
+    <h1>Crafted for Excellence</h1>
+    <p>Discover our premium collection of handcrafted leather shoes.</p>
+    <button class="btn-primary mt-4 glow-button">Shop the Collection</button>
+  </div>
+</div>
+
+<div class="category-tabs glass-panel">
+  <button 
+    class="tab-btn" 
+    [class.active]="selectedCategory === 'Men'" 
+    (click)="selectCategory('Men')">Men</button>
+  <button 
+    class="tab-btn" 
+    [class.active]="selectedCategory === 'Women'" 
+    (click)="selectCategory('Women')">Women</button>
+  <button 
+    class="tab-btn" 
+    [class.active]="selectedCategory === 'Kids'" 
+    (click)="selectCategory('Kids')">Kids</button>
+</div>
+
+<div class="catalog-header">
+  <h2>{{ selectedCategory }}'s Collection</h2>
+  <div class="divider"></div>
+</div>
+
+@if (loading) {
+  <div class="loading">Loading collection...</div>
+} @else if (shoes.length === 0) {
+  <div class="empty-state">No shoes currently available in the catalog.</div>
+} @else if (displayedShoes.length === 0) {
+  <div class="empty-state">No shoes available in this category yet.</div>
+} @else {
+  <div class="grid fade-in">
+    @for (shoe of displayedShoes; track shoe.id) {
+      <div class="glass-panel product-card" (click)="openShoeDetails(shoe)">
+        <div class="img-container">
+          @if (shoe.imageUrl) {
+            <img [src]="shoe.imageUrl" [alt]="shoe.name" class="product-img">
+          } @else {
+            <div class="img-placeholder">No Image</div>
+          }
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">{{ shoe.name }}</h3>
+          <p class="product-price">{{ shoe.price | currency:'ETB':'ETB ' }}</p>
+          <p class="product-desc">{{ shoe.description }}</p>
+          <button class="btn-primary w-100 mt-3 btn-add-cart glow-button" (click)="$event.stopPropagation(); cartService.addToCart(shoe)">Add to Cart</button>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+@if (selectedShoe) {
+  <div class="modal-overlay fade-in" (click)="closeShoeDetails()">
+    <div class="modal-content glass-panel" (click)="$event.stopPropagation()">
+      <button class="close-btn" (click)="closeShoeDetails()">&times;</button>
+      <div class="modal-body">
+        <div class="modal-img-container">
+          @if (selectedShoe.imageUrl) {
+            <img [src]="selectedShoe.imageUrl" [alt]="selectedShoe.name" class="modal-img">
+          } @else {
+            <div class="img-placeholder">No Image</div>
+          }
+        </div>
+        <div class="modal-info">
+          <h2>{{ selectedShoe.name }}</h2>
+          <p class="modal-price">{{ selectedShoe.price | currency:'ETB':'ETB ' }}</p>
+          <div class="modal-description">
+            <p>{{ selectedShoe.description }}</p>
+          </div>
+          <button class="btn-primary w-100 mt-4 glow-button" (click)="cartService.addToCart(selectedShoe); closeShoeDetails()">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

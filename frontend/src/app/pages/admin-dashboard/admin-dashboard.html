@@ -1,0 +1,111 @@
+<div class="dashboard-header">
+  <h2>Admin Dashboard</h2>
+  <p>Manage your shoe catalog and view orders</p>
+</div>
+
+<div class="admin-tabs">
+  <button class="tab-btn" [class.active]="activeTab === 'inventory'" (click)="activeTab = 'inventory'">Inventory</button>
+  <button class="tab-btn" [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'">Orders</button>
+</div>
+
+@if (activeTab === 'inventory') {
+<div class="dashboard-layout">
+  
+  <div class="glass-panel admin-card">
+    <h3>{{ isEditing ? 'Edit Shoe' : 'Add New Shoe' }}</h3>
+    <form (ngSubmit)="saveShoe()" #shoeForm="ngForm">
+      
+      <div class="form-group">
+        <label class="form-label" for="name">Name</label>
+        <input type="text" id="name" class="form-input" [(ngModel)]="currentShoe.name" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="category">Category</label>
+        <select id="category" class="form-input" [(ngModel)]="currentShoe.category" name="category" required>
+          <option value="" disabled>Select a category</option>
+          <option value="Men">Men</option>
+          <option value="Women">Women</option>
+          <option value="Kids">Kids</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="price">Price</label>
+        <input type="number" id="price" class="form-input" [(ngModel)]="currentShoe.price" name="price" required min="0">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="imageFile">Product Image</label>
+        <input type="file" id="imageFile" class="form-input" (change)="onFileSelected($event)" accept="image/*">
+        @if (currentShoe.imageUrl) {
+          <div class="mt-2">
+            <img [src]="currentShoe.imageUrl" alt="Preview" style="max-width: 100px; max-height: 100px; border-radius: 8px;">
+          </div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description">Description</label>
+        <textarea id="description" class="form-input" rows="4" [(ngModel)]="currentShoe.description" name="description"></textarea>
+      </div>
+
+      <div class="actions">
+        @if (isEditing) {
+          <button type="button" class="btn-secondary" (click)="resetForm()">Cancel</button>
+        }
+        <button type="submit" class="btn-primary" [disabled]="!shoeForm.valid">
+          {{ isEditing ? 'Update' : 'Create' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="glass-panel admin-card flex-2">
+    <h3>Current Inventory</h3>
+    
+    <div class="table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Added</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (shoe of shoes; track shoe.id) {
+            <tr>
+              <td>
+                @if (shoe.imageUrl) {
+                  <img [src]="shoe.imageUrl" class="thumb">
+                } @else {
+                  <div class="thumb-placeholder">N/A</div>
+                }
+              </td>
+              <td class="fw-500">{{ shoe.name }}</td>
+              <td>{{ shoe.category || 'N/A' }}</td>
+              <td>{{ shoe.price | currency:'ETB':'ETB ' }}</td>
+              <td>{{ shoe.createdAt | date:'shortDate' }}</td>
+              <td>
+                <button class="btn-icon text-accent" (click)="editShoe(shoe)">Edit</button>
+                <button class="btn-icon text-danger" (click)="deleteShoe(shoe.id)">Delete</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="text-center py-4 text-secondary">No shoes found. Add one above!</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+} @else {
+  <app-admin-orders></app-admin-orders>
+}

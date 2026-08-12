@@ -1,0 +1,84 @@
+<div class="checkout-container fade-in">
+  <h1>Checkout</h1>
+  
+  <div class="checkout-grid">
+    <div class="shipping-section glass-panel">
+      <h2>Shipping Details</h2>
+      
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label class="form-label" for="fullName">Full Name</label>
+          <input id="fullName" type="text" class="form-input" formControlName="fullName" placeholder="Enter your full name">
+          @if (checkoutForm.get('fullName')?.touched && checkoutForm.get('fullName')?.invalid) {
+            <span class="error-text">Please enter a valid full name.</span>
+          }
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone Number</label>
+          <input id="phone" type="tel" class="form-input" formControlName="phone" placeholder="+251 911 123 456">
+          @if (checkoutForm.get('phone')?.touched && checkoutForm.get('phone')?.invalid) {
+            <span class="error-text">Please enter a valid phone number.</span>
+          }
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="address">Delivery Address</label>
+          <textarea id="address" class="form-input" formControlName="address" rows="3" placeholder="Block 4, Bole, Addis Ababa"></textarea>
+          @if (checkoutForm.get('address')?.touched && checkoutForm.get('address')?.invalid) {
+            <span class="error-text">Please enter your full delivery address.</span>
+          }
+        </div>
+        
+        <button type="submit" class="btn-primary w-100 mt-4 glow-button" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Processing...' : 'Place Order' }}
+        </button>
+      </form>
+    </div>
+    
+    <div class="summary-section">
+      <div class="glass-panel order-summary">
+        <h2>Order Summary</h2>
+        
+        <div class="order-items">
+          @for (item of cartService.cartItems(); track item.shoe.id) {
+            <div class="summary-item">
+              <div class="item-img-container-small">
+                @if (item.shoe.imageUrl) {
+                  <img [src]="item.shoe.imageUrl" [alt]="item.shoe.name">
+                }
+              </div>
+              <div class="summary-item-details">
+                <span class="summary-item-name">{{ item.shoe.name }}</span>
+                <span class="summary-item-qty">Qty: {{ item.quantity }}</span>
+              </div>
+              <span class="summary-item-price">{{ (item.shoe.price * item.quantity) | currency:'ETB':'ETB ' }}</span>
+            </div>
+          }
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="cost-row">
+          <span>Subtotal</span>
+          <span>{{ cartService.totalPrice() | currency:'ETB':'ETB ' }}</span>
+        </div>
+        <div class="cost-row">
+          <span>Sales Tax (15%)</span>
+          <span>{{ taxAmount | currency:'ETB':'ETB ' }}</span>
+        </div>
+        <div class="cost-row">
+          <span>Shipping Fee</span>
+          <span>{{ shippingFee | currency:'ETB':'ETB ' }}</span>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="cost-row total-row">
+          <span>Total</span>
+          <span>{{ finalTotal | currency:'ETB':'ETB ' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+using Backend.Data;
+using Backend.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace Backend.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class OrdersController : ControllerBase
+{
+    private readonly AppDbContext _context;
+
+    public OrdersController(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+    {
+        return await _context.Orders
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Shoe)
+            .OrderByDescending(o => o.OrderDate)
+            .ToListAsync();
+    }
+
+    [HttpGet("test")]
+    public async Task<ActionResult> Test()
+    {
+        var items = await _context.OrderItems.ToListAsync();
+        return Ok(items);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<Order>> CreateOrder(Order order)
+    {
+        // Generate a unique order number
+        order.OrderNumber = "ORD-" + Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
+        order.OrderDate = DateTime.UtcNow;
+
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetOrders), new { id = order.Id }, order);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteOrder(int id)
+    {
+        var order = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.Id == id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        _context.Orders.Remove(order);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+}

@@ -1,0 +1,43 @@
+<div class="success-container fade-in">
+  @if (order) {
+    <div class="success-card glass-panel text-center">
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+      </div>
+      
+      <h1>Order Confirmed!</h1>
+      <p class="order-number">Order #{{ order.orderNumber }}</p>
+      
+      <p class="thank-you-text">
+        Thank you for your purchase, {{ order.customerName }}. You have great taste! Your order is being processed.
+      </p>
+      
+      <div class="delivery-info">
+        <h3>Expected Delivery Date</h3>
+        <p class="date">{{ deliveryDate | date:'fullDate' }}</p>
+      </div>
+      
+      <div class="order-summary-mini">
+        <div class="cost-row">
+          <span>Subtotal</span>
+          <span>{{ order.subtotal | currency:'ETB':'ETB ' }}</span>
+        </div>
+        <div class="cost-row">
+          <span>Sales Tax</span>
+          <span>{{ order.salesTax | currency:'ETB':'ETB ' }}</span>
+        </div>
+        <div class="cost-row">
+          <span>Shipping</span>
+          <span>{{ order.shippingFee | currency:'ETB':'ETB ' }}</span>
+        </div>
+        <div class="divider"></div>
+        <div class="cost-row total-row">
+          <span>Total Paid</span>
+          <span>{{ order.total | currency:'ETB':'ETB ' }}</span>
+        </div>
+      </div>
+      
+      <button class="btn-primary glow-button mt-4" routerLink="/">Continue Shopping</button>
+    </div>
+  }
+</div>

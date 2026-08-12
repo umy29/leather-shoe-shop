@@ -1,0 +1,79 @@
+.success-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 20px;
+}
+
+.success-card {
+  max-width: 500px;
+  width: 100%;
+  padding: 40px;
+}
+
+.success-icon {
+  color: #4CAF50;
+  margin-bottom: 24px;
+}
+
+.success-card h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.order-number {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 16px;
+}
+
+.thank-you-text {
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.delivery-info {
+  background: var(--surface-color);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 32px;
+}
+
+.delivery-info h3 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.delivery-info .date {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.order-summary-mini {
+  text-align: left;
+}
+
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+}
+
+.divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 16px 0;
+}
+
+.total-row {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin-bottom: 0;
+}

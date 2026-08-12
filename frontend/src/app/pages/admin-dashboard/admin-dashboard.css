@@ -1,0 +1,154 @@
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h2 {
+  font-size: 2rem;
+  color: var(--accent-color);
+  margin-bottom: 8px;
+}
+
+.dashboard-header p {
+  color: var(--text-secondary);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--surface-border);
+  padding-bottom: 16px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: var(--surface-color);
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  background: rgba(var(--accent-color-rgb, 212, 175, 55), 0.15);
+  color: var(--accent-color);
+}
+
+.dashboard-layout {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.admin-card {
+  padding: 32px;
+  flex: 1;
+  min-width: 300px;
+}
+
+.flex-2 {
+  flex: 2;
+  min-width: 500px;
+}
+
+h3 {
+  margin-bottom: 24px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* Table */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 16px;
+  border-bottom: 1px solid var(--surface-border);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  vertical-align: middle;
+}
+
+.thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.thumb-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  margin-right: 16px;
+  transition: opacity 0.2s;
+}
+
+.btn-icon:hover {
+  opacity: 0.8;
+}
+
+.text-accent {
+  color: var(--accent-color);
+}
+
+.text-danger {
+  color: #ff4d4d;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.py-4 {
+  padding-top: 32px !important;
+  padding-bottom: 32px !important;
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
