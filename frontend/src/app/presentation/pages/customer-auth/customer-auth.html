@@ -1,43 +1,101 @@
-<div class="auth-container">
-  <div class="auth-card">
-    <h2>{{ isLoginMode ? 'Welcome Back' : 'Create an Account' }}</h2>
-    <p class="subtitle">{{ isLoginMode ? 'Login to access your orders and checkout faster.' : 'Sign up to get started.' }}</p>
+<div class="auth-page-container fade-in">
+  <div class="auth-card glass-card-elevated">
+    <!-- Brand Emblem Header -->
+    <div class="auth-header">
+      <div class="brand-crest">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      </div>
+      <span class="auth-brand-tag brand-font">LUXE LEATHER ATELIER</span>
+      <h2 class="auth-title">{{ isLoginMode ? 'Client Portal Sign In' : 'Join The Artisan Circle' }}</h2>
+      <p class="auth-subtitle">
+        {{ isLoginMode 
+          ? 'Access your bespoke commission history and expedited checkout.' 
+          : 'Create your private account for early access to limited artisanal drops.' }}
+      </p>
+    </div>
 
-    <form (ngSubmit)="onSubmit()">
+    <!-- Segmented Mode Switcher Tabs -->
+    <div class="auth-tab-group">
+      <button 
+        type="button" 
+        class="auth-tab-btn" 
+        [class.active]="isLoginMode" 
+        (click)="setMode(true)">
+        Sign In
+      </button>
+      <button 
+        type="button" 
+        class="auth-tab-btn" 
+        [class.active]="!isLoginMode" 
+        (click)="setMode(false)">
+        Register
+      </button>
+    </div>
+
+    <!-- Error Banner -->
+    @if (errorMessage) {
+      <div class="auth-error-banner fade-in">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- Form -->
+    <form (ngSubmit)="onSubmit()" class="auth-form-fields">
       <div class="form-group">
-        <label for="username">Username</label>
-        <input 
-          type="text" 
-          id="username" 
-          name="username" 
-          [(ngModel)]="username" 
-          required 
-          placeholder="Enter your username">
+        <label class="form-label" for="auth-username">Client Username</label>
+        <div class="input-icon-wrapper">
+          <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <input 
+            type="text" 
+            id="auth-username" 
+            name="username" 
+            [(ngModel)]="username" 
+            required 
+            class="form-input with-icon"
+            placeholder="Enter your username">
+        </div>
       </div>
       
       <div class="form-group">
-        <label for="password">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          name="password" 
-          [(ngModel)]="password" 
-          required 
-          placeholder="Enter your password">
+        <label class="form-label" for="auth-password">Secret Password</label>
+        <div class="input-icon-wrapper">
+          <svg class="field-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <input 
+            type="password" 
+            id="auth-password" 
+            name="password" 
+            [(ngModel)]="password" 
+            required 
+            class="form-input with-icon"
+            placeholder="••••••••">
+        </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" [disabled]="!username || !password">
-        {{ isLoginMode ? 'Login' : 'Sign Up' }}
+      <button 
+        type="submit" 
+        class="btn-primary w-100 glow-button auth-submit-btn" 
+        [disabled]="isLoading || !username || !password">
+        <span>{{ isLoading ? 'Verifying...' : (isLoginMode ? 'Sign In to Atelier' : 'Create Bespoke Account') }}</span>
       </button>
     </form>
 
-    <div class="toggle-mode">
-      <p>
-        {{ isLoginMode ? "Don't have an account?" : "Already have an account?" }}
-        <a href="javascript:void(0)" (click)="toggleMode()">
-          {{ isLoginMode ? 'Sign up here' : 'Login here' }}
-        </a>
+    <!-- Trust Footer & Switcher -->
+    <div class="auth-card-footer">
+      <p class="mode-toggle-text">
+        {{ isLoginMode ? "New to Luxe Leather?" : "Already hold an atelier account?" }}
+        <button type="button" class="inline-toggle-link" (click)="toggleMode()">
+          {{ isLoginMode ? 'Register here' : 'Sign in here' }}
+        </button>
       </p>
+
+      <div class="security-guarantee">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        <span>End-to-End Encrypted Client Session</span>
+      </div>
     </div>
   </div>
 </div>
+
