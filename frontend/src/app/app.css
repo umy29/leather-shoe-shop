@@ -17,8 +17,8 @@ body.light-mode .boutique-footer {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1.8fr 1fr 1.1fr 1.4fr;
+  gap: 40px;
   margin-bottom: 40px;
 }
 
@@ -61,8 +61,36 @@ body.light-mode .boutique-footer {
   color: var(--text-secondary);
   font-size: 0.92rem;
   line-height: 1.7;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   max-width: 380px;
+}
+
+/* Social Media Links */
+.footer-social-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.social-icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid var(--border-gold);
+  color: var(--accent-gold);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.social-icon-btn:hover {
+  background: var(--accent-gold);
+  color: #0b0c10;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 14px var(--accent-gold-glow);
 }
 
 .footer-col h4 {
@@ -92,18 +120,50 @@ body.light-mode .boutique-footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 0;
+  margin: 0;
 }
 
 .footer-col ul li a, .footer-col ul li span {
   font-size: 0.9rem;
   color: var(--text-secondary);
   transition: all var(--transition-fast);
+  text-decoration: none;
 }
 
 .footer-col ul li a:hover {
   color: var(--accent-gold);
   transform: translateX(4px);
   display: inline-block;
+}
+
+/* Contact List Specifics */
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.contact-item svg {
+  color: var(--accent-gold);
+  flex-shrink: 0;
+}
+
+.contact-item a {
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.contact-item a:hover {
+  color: var(--accent-gold);
 }
 
 .footer-divider {
