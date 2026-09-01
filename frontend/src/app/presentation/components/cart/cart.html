@@ -1,54 +1,101 @@
 <div class="cart-overlay" [class.open]="cartService.isCartOpen()" (click)="cartService.closeCart()"></div>
 
-<div class="cart-sidebar glass-panel" [class.open]="cartService.isCartOpen()">
+<div class="luxury-cart-drawer glass-panel" [class.open]="cartService.isCartOpen()">
+  <!-- Drawer Header -->
   <div class="cart-header">
-    <h2>Your Cart</h2>
-    <button class="close-btn" (click)="cartService.closeCart()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <div class="header-title-group">
+      <div class="cart-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+      </div>
+      <div>
+        <h2>Your Bespoke Cart</h2>
+        <span class="item-count-text">{{ cartService.totalItems() }} {{ cartService.totalItems() === 1 ? 'item' : 'items' }} selected</span>
+      </div>
+    </div>
+    <button class="drawer-close-btn" (click)="cartService.closeCart()" aria-label="Close cart">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
   </div>
 
+  <!-- Free Shipping Incentive Bar -->
+  <div class="shipping-incentive-bar">
+    <div class="incentive-text">
+      @if (cartService.totalPrice() >= 5000) {
+        <span>✨ You've unlocked <strong>Complimentary Bespoke Delivery</strong>!</span>
+      } @else {
+        <span>Add <strong>{{ (5000 - cartService.totalPrice()) | currency:'ETB':'ETB ' }}</strong> more for Free Shipping</span>
+      }
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" [style.width.%]="cartService.totalPrice() >= 5000 ? 100 : (cartService.totalPrice() / 5000 * 100)"></div>
+    </div>
+  </div>
+
+  <!-- Drawer Body -->
   <div class="cart-body">
     @if (cartService.cartItems().length === 0) {
-      <div class="empty-cart">
-        <p>Your cart is currently empty.</p>
-        <button class="btn-primary mt-4" (click)="cartService.closeCart()">Continue Shopping</button>
+      <div class="empty-cart-state fade-in">
+        <div class="empty-bag-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+        </div>
+        <h3>Your bag is empty</h3>
+        <p>Explore our handcrafted collection and discover your signature silhouette.</p>
+        <button class="btn-primary mt-4" (click)="cartService.closeCart()">Explore Collection</button>
       </div>
     } @else {
-      <div class="cart-items">
+      <div class="cart-items-list">
         @for (item of cartService.cartItems(); track item.shoe.id) {
-          <div class="cart-item glass-panel">
-            <div class="item-img-container">
+          <div class="cart-item-card glass-panel fade-in">
+            <div class="item-thumbnail">
               @if (item.shoe.imageUrl) {
-                <img [src]="item.shoe.imageUrl" [alt]="item.shoe.name" class="item-img">
+                <img [src]="item.shoe.imageUrl" [alt]="item.shoe.name" class="thumbnail-img">
+              } @else {
+                <div class="thumbnail-fallback">Shoe</div>
               }
             </div>
-            <div class="item-details">
-              <h4>{{ item.shoe.name }}</h4>
-              <p class="item-price">{{ item.shoe.price | currency:'ETB':'ETB ' }}</p>
+
+            <div class="item-meta">
+              <div class="item-title-row">
+                <h4 class="item-name">{{ item.shoe.name }}</h4>
+                <button class="item-remove-trigger" (click)="cartService.removeFromCart(item.shoe.id)" title="Remove item">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </button>
+              </div>
+
+              <span class="item-unit-price">{{ item.shoe.price | currency:'ETB':'ETB ' }}</span>
               
-              <div class="quantity-controls">
-                <button class="qty-btn" (click)="cartService.updateQuantity(item.shoe.id, item.quantity - 1)">-</button>
-                <span class="qty">{{ item.quantity }}</span>
-                <button class="qty-btn" (click)="cartService.updateQuantity(item.shoe.id, item.quantity + 1)">+</button>
+              <div class="item-controls-row">
+                <div class="qty-stepper">
+                  <button class="stepper-btn" (click)="cartService.updateQuantity(item.shoe.id, item.quantity - 1)" aria-label="Decrease quantity">-</button>
+                  <span class="stepper-val">{{ item.quantity }}</span>
+                  <button class="stepper-btn" (click)="cartService.updateQuantity(item.shoe.id, item.quantity + 1)" aria-label="Increase quantity">+</button>
+                </div>
+                <span class="item-subtotal-price">{{ (item.shoe.price * item.quantity) | currency:'ETB':'ETB ' }}</span>
               </div>
             </div>
-            <button class="remove-btn" (click)="cartService.removeFromCart(item.shoe.id)" title="Remove item">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-            </button>
           </div>
         }
       </div>
     }
   </div>
 
+  <!-- Drawer Footer -->
   @if (cartService.cartItems().length > 0) {
-    <div class="cart-footer">
-      <div class="summary-row">
-        <span>Subtotal</span>
-        <span class="total-price">{{ cartService.totalPrice() | currency:'ETB':'ETB ' }}</span>
+    <div class="cart-drawer-footer">
+      <div class="drawer-summary-row">
+        <span>Order Subtotal</span>
+        <span class="summary-total-val">{{ cartService.totalPrice() | currency:'ETB':'ETB ' }}</span>
       </div>
-      <button class="btn-primary w-100 glow-button checkout-btn" (click)="cartService.closeCart()" routerLink="/checkout">Checkout</button>
+      <p class="summary-disclaimer">Taxes and delivery calculated securely at checkout.</p>
+      
+      <button 
+        class="btn-primary w-100 glow-button checkout-trigger-btn" 
+        (click)="cartService.closeCart()" 
+        routerLink="/checkout">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>Proceed to Bespoke Checkout</span>
+      </button>
     </div>
   }
 </div>
+

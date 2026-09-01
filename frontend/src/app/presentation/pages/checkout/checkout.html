@@ -1,84 +1,131 @@
-<div class="checkout-container fade-in">
-  <h1>Checkout</h1>
-  
+<div class="checkout-page-container fade-in">
+  <!-- Stepper -->
+  <div class="checkout-stepper">
+    <div class="step-item active">
+      <span class="step-circle">1</span>
+      <span class="step-text">Bespoke Shipping</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-item">
+      <span class="step-circle">2</span>
+      <span class="step-text">Payment & Review</span>
+    </div>
+    <div class="step-line"></div>
+    <div class="step-item">
+      <span class="step-circle">3</span>
+      <span class="step-text">Artisan Confirmation</span>
+    </div>
+  </div>
+
   <div class="checkout-grid">
+    <!-- Left Column: Shipping Form -->
     <div class="shipping-section glass-panel">
-      <h2>Shipping Details</h2>
+      <div class="section-header">
+        <span class="section-tag brand-font">DELIVERY DESTINATION</span>
+        <h2>Client & Shipping Details</h2>
+        <p class="section-desc">Please provide the address where your handcrafted footwear will be delivered.</p>
+      </div>
       
-      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="checkout-form">
         <div class="form-group">
-          <label class="form-label" for="fullName">Full Name</label>
-          <input id="fullName" type="text" class="form-input" formControlName="fullName" placeholder="Enter your full name">
+          <label class="form-label" for="fullName">Client Full Name *</label>
+          <input id="fullName" type="text" class="form-input" formControlName="fullName" placeholder="e.g. Samuel Yohannes">
           @if (checkoutForm.get('fullName')?.touched && checkoutForm.get('fullName')?.invalid) {
-            <span class="error-text">Please enter a valid full name.</span>
+            <span class="error-text">Please provide your full recipient name.</span>
           }
         </div>
         
         <div class="form-group">
-          <label class="form-label" for="phone">Phone Number</label>
-          <input id="phone" type="tel" class="form-input" formControlName="phone" placeholder="+251 911 123 456">
+          <label class="form-label" for="phone">Direct Contact / Phone Number *</label>
+          <input id="phone" type="tel" class="form-input" formControlName="phone" placeholder="+251 911 234 567">
           @if (checkoutForm.get('phone')?.touched && checkoutForm.get('phone')?.invalid) {
-            <span class="error-text">Please enter a valid phone number.</span>
+            <span class="error-text">Please provide a valid phone number for courier updates.</span>
           }
         </div>
         
         <div class="form-group">
-          <label class="form-label" for="address">Delivery Address</label>
-          <textarea id="address" class="form-input" formControlName="address" rows="3" placeholder="Block 4, Bole, Addis Ababa"></textarea>
+          <label class="form-label" for="address">Delivery Address (House / Street / City) *</label>
+          <textarea id="address" class="form-input address-textarea" formControlName="address" rows="3" placeholder="Bole Sub-city, Near Edna Mall, Addis Ababa"></textarea>
           @if (checkoutForm.get('address')?.touched && checkoutForm.get('address')?.invalid) {
-            <span class="error-text">Please enter your full delivery address.</span>
+            <span class="error-text">Please provide full delivery address details.</span>
           }
         </div>
+
+        <!-- Trust Features Grid -->
+        <div class="trust-features-grid">
+          <div class="trust-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>256-Bit SSL Encrypted</span>
+          </div>
+          <div class="trust-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Authentic Full-Grain</span>
+          </div>
+        </div>
         
-        <button type="submit" class="btn-primary w-100 mt-4 glow-button" [disabled]="isSubmitting">
-          {{ isSubmitting ? 'Processing...' : 'Place Order' }}
+        <button type="submit" class="btn-primary w-100 glow-button submit-order-btn" [disabled]="isSubmitting">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          <span>{{ isSubmitting ? 'Securing Your Order...' : 'Confirm & Place Order' }}</span>
         </button>
       </form>
     </div>
     
+    <!-- Right Column: Order Summary -->
     <div class="summary-section">
-      <div class="glass-panel order-summary">
-        <h2>Order Summary</h2>
+      <div class="glass-panel order-summary-card">
+        <div class="summary-header">
+          <h3>Order Summary</h3>
+          <span class="items-count-badge">{{ cartService.totalItems() }} items</span>
+        </div>
         
-        <div class="order-items">
+        <div class="order-items-scroll">
           @for (item of cartService.cartItems(); track item.shoe.id) {
-            <div class="summary-item">
-              <div class="item-img-container-small">
+            <div class="summary-item-row">
+              <div class="summary-img-thumb">
                 @if (item.shoe.imageUrl) {
                   <img [src]="item.shoe.imageUrl" [alt]="item.shoe.name">
+                } @else {
+                  <div class="thumb-fallback">Shoe</div>
                 }
               </div>
-              <div class="summary-item-details">
-                <span class="summary-item-name">{{ item.shoe.name }}</span>
-                <span class="summary-item-qty">Qty: {{ item.quantity }}</span>
+              <div class="summary-item-info">
+                <span class="item-name-text">{{ item.shoe.name }}</span>
+                <span class="item-meta-text">Qty: {{ item.quantity }} • Leather Footwear</span>
               </div>
-              <span class="summary-item-price">{{ (item.shoe.price * item.quantity) | currency:'ETB':'ETB ' }}</span>
+              <span class="item-calc-price">{{ (item.shoe.price * item.quantity) | currency:'ETB':'ETB ' }}</span>
             </div>
           }
         </div>
         
-        <div class="divider"></div>
+        <div class="summary-divider"></div>
         
-        <div class="cost-row">
-          <span>Subtotal</span>
-          <span>{{ cartService.totalPrice() | currency:'ETB':'ETB ' }}</span>
-        </div>
-        <div class="cost-row">
-          <span>Sales Tax (15%)</span>
-          <span>{{ taxAmount | currency:'ETB':'ETB ' }}</span>
-        </div>
-        <div class="cost-row">
-          <span>Shipping Fee</span>
-          <span>{{ shippingFee | currency:'ETB':'ETB ' }}</span>
+        <div class="cost-breakdown">
+          <div class="cost-row">
+            <span>Subtotal</span>
+            <span>{{ cartService.totalPrice() | currency:'ETB':'ETB ' }}</span>
+          </div>
+          <div class="cost-row">
+            <span>Sales Tax (15%)</span>
+            <span>{{ taxAmount | currency:'ETB':'ETB ' }}</span>
+          </div>
+          <div class="cost-row">
+            <span>Shipping & Handling</span>
+            <span>{{ shippingFee === 0 ? 'Complimentary' : (shippingFee | currency:'ETB':'ETB ') }}</span>
+          </div>
         </div>
         
-        <div class="divider"></div>
+        <div class="summary-divider"></div>
         
-        <div class="cost-row total-row">
-          <span>Total</span>
-          <span>{{ finalTotal | currency:'ETB':'ETB ' }}</span>
+        <div class="total-row">
+          <span>Final Total</span>
+          <span class="final-price-text">{{ finalTotal | currency:'ETB':'ETB ' }}</span>
+        </div>
+
+        <div class="artisan-note">
+          <span>✨ Every pair comes in our signature gold-embossed bespoke gift box with cedar trees.</span>
         </div>
       </div>
     </div>
   </div>
 </div>
+

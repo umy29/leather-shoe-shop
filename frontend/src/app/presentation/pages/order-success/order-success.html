@@ -1,43 +1,85 @@
-<div class="success-container fade-in">
+<div class="success-page-container fade-in">
   @if (order) {
-    <div class="success-card glass-panel text-center">
-      <div class="success-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+    <div class="success-certificate-card glass-card-elevated">
+      <!-- Certificate Seal Header -->
+      <div class="certificate-seal">
+        <div class="seal-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
       </div>
       
-      <h1>Order Confirmed!</h1>
-      <p class="order-number">Order #{{ order.orderNumber }}</p>
+      <span class="order-tag brand-font">OFFICIAL BESPOKE COMMISSION</span>
+      <h1 class="certificate-title">Order Confirmed</h1>
+      <div class="order-number-badge">
+        <span>Order #{{ order.orderNumber }}</span>
+      </div>
       
-      <p class="thank-you-text">
-        Thank you for your purchase, {{ order.customerName }}. You have great taste! Your order is being processed.
+      <p class="thank-you-paragraph">
+        Thank you for your distinguished patronage, <strong>{{ order.customerName }}</strong>. Your bespoke footwear has entered our master atelier queue.
       </p>
       
-      <div class="delivery-info">
-        <h3>Expected Delivery Date</h3>
-        <p class="date">{{ deliveryDate | date:'fullDate' }}</p>
+      <!-- Tracking Timeline -->
+      <div class="order-timeline-box glass-panel">
+        <div class="timeline-step done">
+          <div class="timeline-dot">✓</div>
+          <span class="timeline-label">Order Received</span>
+        </div>
+        <div class="timeline-bar active"></div>
+        <div class="timeline-step active">
+          <div class="timeline-dot">2</div>
+          <span class="timeline-label">Leather Cutting</span>
+        </div>
+        <div class="timeline-bar"></div>
+        <div class="timeline-step">
+          <div class="timeline-dot">3</div>
+          <span class="timeline-label">Goodyear Welt</span>
+        </div>
+        <div class="timeline-bar"></div>
+        <div class="timeline-step">
+          <div class="timeline-dot">4</div>
+          <span class="timeline-label">Artisan Dispatch</span>
+        </div>
+      </div>
+
+      <!-- Expected Delivery Pill -->
+      <div class="delivery-highlight-box">
+        <div class="delivery-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+        </div>
+        <div class="delivery-text-group">
+          <span class="deliv-label">Estimated Delivery Date</span>
+          <span class="deliv-date">{{ deliveryDate | date:'fullDate' }}</span>
+        </div>
       </div>
       
-      <div class="order-summary-mini">
-        <div class="cost-row">
-          <span>Subtotal</span>
+      <!-- Receipt Breakdown -->
+      <div class="receipt-breakdown glass-panel">
+        <h4 class="receipt-title">Commission Summary</h4>
+        <div class="receipt-row">
+          <span>Artisan Subtotal</span>
           <span>{{ order.subtotal | currency:'ETB':'ETB ' }}</span>
         </div>
-        <div class="cost-row">
-          <span>Sales Tax</span>
+        <div class="receipt-row">
+          <span>VAT (15%)</span>
           <span>{{ order.salesTax | currency:'ETB':'ETB ' }}</span>
         </div>
-        <div class="cost-row">
-          <span>Shipping</span>
-          <span>{{ order.shippingFee | currency:'ETB':'ETB ' }}</span>
+        <div class="receipt-row">
+          <span>Expedited Courier</span>
+          <span>{{ order.shippingFee === 0 ? 'Complimentary' : (order.shippingFee | currency:'ETB':'ETB ') }}</span>
         </div>
-        <div class="divider"></div>
-        <div class="cost-row total-row">
-          <span>Total Paid</span>
-          <span>{{ order.total | currency:'ETB':'ETB ' }}</span>
+        <div class="receipt-divider"></div>
+        <div class="receipt-row total-receipt-row">
+          <span>Total Commission Paid</span>
+          <span class="total-receipt-amount">{{ order.total | currency:'ETB':'ETB ' }}</span>
         </div>
       </div>
       
-      <button class="btn-primary glow-button mt-4" routerLink="/">Continue Shopping</button>
+      <div class="success-actions">
+        <button class="btn-primary glow-button" routerLink="/">
+          <span>Explore More Creations</span>
+        </button>
+      </div>
     </div>
   }
 </div>
+
