@@ -1,43 +1,25 @@
-.top-announcement {
-  background: linear-gradient(90deg, #12141d 0%, #1c1f2e 50%, #12141d 100%);
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 8px 16px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: var(--accent-gold-light);
-  text-align: center;
-}
-
-body.light-mode .top-announcement {
-  background: linear-gradient(90deg, #ececf2 0%, #f7f7fa 50%, #ececf2 100%);
-  color: var(--accent-gold);
-}
-
-.announcement-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 /* Boutique Footer */
 .boutique-footer {
-  background: linear-gradient(180deg, transparent 0%, rgba(10, 11, 15, 0.95) 20%, #08090c 100%);
-  border-top: 1px solid var(--border-subtle);
-  padding: 70px 0 30px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-gold);
+  padding: 56px 0 28px;
   margin-top: auto;
   position: relative;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
+  transition: background-color var(--transition-smooth), border-color var(--transition-smooth);
 }
 
 body.light-mode .boutique-footer {
-  background: linear-gradient(180deg, transparent 0%, rgba(240, 242, 248, 0.95) 20%, #e9ecf2 100%);
+  background: #ffffff;
+  border-top: 1px solid var(--border-gold);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .footer-grid {
   display: grid;
   grid-template-columns: 2.2fr 1fr 1.3fr;
   gap: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 
 .footer-brand-header {
@@ -48,8 +30,8 @@ body.light-mode .boutique-footer {
 }
 
 .footer-logo-container {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   overflow: hidden;
   border: 1.5px solid var(--accent-gold);
@@ -57,7 +39,7 @@ body.light-mode .boutique-footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 14px var(--accent-gold-glow);
+  box-shadow: 0 0 12px var(--accent-gold-glow);
   flex-shrink: 0;
 }
 
@@ -68,7 +50,7 @@ body.light-mode .boutique-footer {
 }
 
 .footer-brand .brand-logo {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 800;
   color: var(--accent-gold);
   letter-spacing: 0.18em;
@@ -79,18 +61,18 @@ body.light-mode .boutique-footer {
   color: var(--text-secondary);
   font-size: 0.92rem;
   line-height: 1.7;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   max-width: 380px;
 }
 
 .footer-col h4 {
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   position: relative;
 }
 
@@ -124,49 +106,10 @@ body.light-mode .boutique-footer {
   display: inline-block;
 }
 
-.newsletter-desc {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
-  line-height: 1.6;
-}
-
-.newsletter-box {
-  display: flex;
-  gap: 8px;
-}
-
-.newsletter-input {
-  flex: 1;
-  background: rgba(18, 20, 30, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  padding: 10px 18px;
-  color: var(--text-primary);
-  font-size: 0.9rem;
-  font-family: var(--font-sans);
-  outline: none;
-  transition: all var(--transition-fast);
-}
-
-body.light-mode .newsletter-input {
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.newsletter-input:focus {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 0 2px var(--accent-gold-glow);
-}
-
-.newsletter-btn {
-  padding: 10px 22px;
-  font-size: 0.88rem;
-}
-
 .footer-divider {
   height: 1px;
   background: var(--border-subtle);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .bottom-content {
