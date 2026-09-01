@@ -38,6 +38,28 @@ public class AuthController : ControllerBase
         return Ok(new { token });
     }
 
+    [HttpPost("signup")]
+    public async Task<IActionResult> Signup([FromBody] SignupDto signupDto)
+    {
+        if (await _context.Users.AnyAsync(u => u.Username == signupDto.Username))
+        {
+            return BadRequest("User with that username already exists.");
+        }
+
+        var user = new User
+        {
+            Username = signupDto.Username,
+            PasswordHash = signupDto.Password, // In a real app, hash this!
+            Role = "Customer"
+        };
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        var token = GenerateJwtToken(user);
+        return Ok(new { token });
+    }
+
     [HttpPost("setup")]
     public async Task<IActionResult> SetupAdmin()
     {

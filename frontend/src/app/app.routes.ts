@@ -6,9 +6,11 @@ import { authGuard } from './core/guards/auth.guard';
 import { AdminOrders } from './presentation/pages/admin-orders/admin-orders';
 import { Checkout } from './presentation/pages/checkout/checkout';
 import { OrderSuccess } from './presentation/pages/order-success/order-success';
+import { CustomerAuth } from './presentation/pages/customer-auth/customer-auth';
 
 export const routes: Routes = [
   { path: '', component: Home },
+  { path: 'customer-auth', component: CustomerAuth },
   { path: 'login', component: AdminLogin },
   { path: 'checkout', component: Checkout },
   { path: 'order-success', component: OrderSuccess },

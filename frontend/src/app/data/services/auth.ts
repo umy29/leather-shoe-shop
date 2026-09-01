@@ -12,13 +12,25 @@ export class Auth {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(credentials: any) {
+  login(credentials: any, returnUrl: string = '/admin') {
     return this.http.post<{token: string}>(`${this.apiUrl}/login`, credentials).pipe(
       tap(res => {
         if(res.token) {
           localStorage.setItem('token', res.token);
           this.isAuthenticated.set(true);
-          this.router.navigate(['/admin']);
+          this.router.navigate([returnUrl]);
+        }
+      })
+    );
+  }
+
+  signup(credentials: any, returnUrl: string = '/') {
+    return this.http.post<{token: string}>(`${this.apiUrl}/signup`, credentials).pipe(
+      tap(res => {
+        if(res.token) {
+          localStorage.setItem('token', res.token);
+          this.isAuthenticated.set(true);
+          this.router.navigate([returnUrl]);
         }
       })
     );

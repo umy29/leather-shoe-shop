@@ -18,6 +18,13 @@
           }
         </button>
       }
+      
+      @if (!auth.isAuthenticated()) {
+        <a routerLink="/customer-auth" class="nav-link">Login</a>
+      } @else if (!showAdminLinks) {
+        <button class="btn-secondary logout-btn" (click)="logout()">Logout</button>
+      }
+
       @if (showAdminLinks) {
         <a routerLink="/admin" class="nav-link">Dashboard</a>
         <button class="btn-secondary logout-btn" (click)="logout()">Logout</button>
