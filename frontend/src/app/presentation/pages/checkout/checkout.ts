@@ -23,7 +23,10 @@ export class Checkout implements OnInit {
   isSubmitting = false;
 
   readonly salesTaxRate = 0.15;
-  readonly shippingFee = 300;
+  
+  get shippingFee(): number {
+    return this.cartService.totalPrice() >= 5000 ? 0 : 300;
+  }
 
   get taxAmount(): number {
     return this.cartService.totalPrice() * this.salesTaxRate;

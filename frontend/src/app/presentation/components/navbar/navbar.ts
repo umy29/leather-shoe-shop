@@ -1,5 +1,5 @@
 import { Component, inject, Inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../../data/services/auth';
 import { DOCUMENT } from '@angular/common';
 import { CartService } from '../../../data/services/cart';
@@ -7,7 +7,7 @@ import { CartService } from '../../../data/services/cart';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
