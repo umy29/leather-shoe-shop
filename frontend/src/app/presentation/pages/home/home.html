@@ -1,80 +1,247 @@
-<div class="hero">
-  <div class="hero-content">
-    <h1>Crafted for Excellence</h1>
-    <p>Discover our premium collection of handcrafted leather shoes.</p>
-    <button class="btn-primary mt-4 glow-button">Shop the Collection</button>
+<!-- Hero Section -->
+<section class="luxury-hero glass-panel">
+  <div class="hero-content fade-in">
+    <div class="luxury-badge mb-3">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+      <span>Bespoke Heritage • 100% Genuine Full-Grain Leather</span>
+    </div>
+    
+    <h1 class="hero-title">
+      Elegance Sculpted By Hand, <br class="d-none-sm">
+      <span class="gradient-text">Worn For Generations</span>
+    </h1>
+    
+    <p class="hero-subtitle">
+      Discover our limited handcrafted capsule collections. Every pair is meticulously cut, welted, and hand-burnished by master cobblers honoring centuries of artisanal shoemaking.
+    </p>
+    
+    <div class="hero-actions">
+      <button class="btn-primary glow-button" (click)="scrollToCatalog()">
+        <span>Explore Collection</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+      </button>
+      <button class="btn-secondary" (click)="scrollToCatalog()">
+        <span>The Craftsmanship</span>
+      </button>
+    </div>
   </div>
-</div>
 
-<div class="category-tabs glass-panel">
-  <button 
-    class="tab-btn" 
-    [class.active]="selectedCategory === 'Men'" 
-    (click)="selectCategory('Men')">Men</button>
-  <button 
-    class="tab-btn" 
-    [class.active]="selectedCategory === 'Women'" 
-    (click)="selectCategory('Women')">Women</button>
-  <button 
-    class="tab-btn" 
-    [class.active]="selectedCategory === 'Kids'" 
-    (click)="selectCategory('Kids')">Kids</button>
-</div>
+  <!-- Craftsmanship Stats -->
+  <div class="hero-stats-grid">
+    <div class="stat-card">
+      <span class="stat-number">500+</span>
+      <span class="stat-label">Bespoke Pairs Crafted</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">100%</span>
+      <span class="stat-label">Full-Grain Calfskin</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">Goodyear</span>
+      <span class="stat-label">Hand-Welted Longevity</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">4.9 ★</span>
+      <span class="stat-label">Connoisseur Rating</span>
+    </div>
+  </div>
+</section>
 
-<div class="catalog-header">
-  <h2>{{ selectedCategory }}'s Collection</h2>
-  <div class="divider"></div>
-</div>
+<!-- Catalog Section -->
+<section id="catalog-section" class="catalog-section">
+  <div class="catalog-header-group">
+    <span class="section-tag brand-font">THE ATELIER ARCHIVE</span>
+    <h2 class="section-title">The Curated Collection</h2>
+    <div class="divider"></div>
+  </div>
 
-@if (loading) {
-  <div class="loading">Loading collection...</div>
-} @else if (shoes.length === 0) {
-  <div class="empty-state">No shoes currently available in the catalog.</div>
-} @else if (displayedShoes.length === 0) {
-  <div class="empty-state">No shoes available in this category yet.</div>
-} @else {
-  <div class="grid fade-in">
-    @for (shoe of displayedShoes; track shoe.id) {
-      <div class="glass-panel product-card" (click)="openShoeDetails(shoe)">
-        <div class="img-container">
-          @if (shoe.imageUrl) {
-            <img [src]="shoe.imageUrl" [alt]="shoe.name" class="product-img">
-          } @else {
-            <div class="img-placeholder">No Image</div>
-          }
-        </div>
-        <div class="product-info">
-          <h3 class="product-name">{{ shoe.name }}</h3>
-          <p class="product-price">{{ shoe.price | currency:'ETB':'ETB ' }}</p>
-          <p class="product-desc">{{ shoe.description }}</p>
-          <button class="btn-primary w-100 mt-3 btn-add-cart glow-button" (click)="$event.stopPropagation(); cartService.addToCart(shoe)">Add to Cart</button>
-        </div>
+  <!-- Filter & Search Toolbar -->
+  <div class="catalog-toolbar glass-panel">
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+      @for (cat of categories; track cat) {
+        <button 
+          class="tab-btn" 
+          [class.active]="selectedCategory === cat" 
+          (click)="selectCategory(cat)">
+          <span>{{ cat }}</span>
+          <span class="count-pill">{{ categoryCounts[cat] || 0 }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Search & Sort Controls -->
+    <div class="toolbar-controls">
+      <div class="search-input-wrapper">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input 
+          type="text" 
+          placeholder="Search by silhouette or leather..." 
+          [(ngModel)]="searchQuery"
+          class="toolbar-search">
       </div>
-    }
-  </div>
-}
 
-@if (selectedShoe) {
-  <div class="modal-overlay fade-in" (click)="closeShoeDetails()">
-    <div class="modal-content glass-panel" (click)="$event.stopPropagation()">
-      <button class="close-btn" (click)="closeShoeDetails()">&times;</button>
-      <div class="modal-body">
-        <div class="modal-img-container">
-          @if (selectedShoe.imageUrl) {
-            <img [src]="selectedShoe.imageUrl" [alt]="selectedShoe.name" class="modal-img">
-          } @else {
-            <div class="img-placeholder">No Image</div>
-          }
+      <div class="sort-select-wrapper">
+        <select [(ngModel)]="sortBy" class="toolbar-sort">
+          <option value="featured">Featured Order</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Grid -->
+  @if (loading) {
+    <div class="loading-state glass-panel">
+      <div class="spinner"></div>
+      <p>Unveiling handcrafted catalog...</p>
+    </div>
+  } @else if (displayedShoes.length === 0) {
+    <div class="empty-state glass-panel">
+      <div class="empty-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+      </div>
+      <h3>No footwear matches your criteria</h3>
+      <p>Try selecting another category or clearing your search filter.</p>
+      <button class="btn-secondary mt-3" (click)="selectedCategory = 'All'; searchQuery = ''">Reset Filters</button>
+    </div>
+  } @else {
+    <div class="product-grid fade-in">
+      @for (shoe of displayedShoes; track shoe.id) {
+        <div class="luxury-product-card glass-panel" (click)="openShoeDetails(shoe)">
+          <div class="card-image-wrapper">
+            @if (shoe.imageUrl) {
+              <img [src]="shoe.imageUrl" [alt]="shoe.name" class="product-image" loading="lazy">
+            } @else {
+              <div class="image-fallback">
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span>Artisan Silhouette</span>
+              </div>
+            }
+            <div class="category-badge-chip">
+              <span>{{ shoe.category || 'Classic' }}</span>
+            </div>
+            <div class="quick-view-overlay">
+              <span>Inspect Craftsmanship</span>
+            </div>
+          </div>
+
+          <div class="card-content">
+            <div class="card-title-row">
+              <h3 class="product-name">{{ shoe.name }}</h3>
+              <span class="product-price">{{ shoe.price | currency:'ETB':'ETB ' }}</span>
+            </div>
+            
+            <p class="product-description">{{ shoe.description }}</p>
+
+            <div class="card-action-row">
+              <button 
+                class="btn-primary w-100 add-cart-btn" 
+                (click)="handleAddToCart(shoe, $event)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                <span>Add to Cart</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="modal-info">
-          <h2>{{ selectedShoe.name }}</h2>
-          <p class="modal-price">{{ selectedShoe.price | currency:'ETB':'ETB ' }}</p>
-          <div class="modal-description">
+      }
+    </div>
+  }
+</section>
+
+<!-- Product Showroom Modal -->
+@if (selectedShoe) {
+  <div class="modal-backdrop fade-in" (click)="closeShoeDetails()">
+    <div class="showroom-modal glass-card-elevated" (click)="$event.stopPropagation()">
+      <button class="modal-close-trigger" (click)="closeShoeDetails()" aria-label="Close dialog">&times;</button>
+      
+      <div class="modal-grid">
+        <div class="modal-visual-column">
+          @if (selectedShoe.imageUrl) {
+            <img [src]="selectedShoe.imageUrl" [alt]="selectedShoe.name" class="modal-hero-image">
+          } @else {
+            <div class="modal-image-fallback">Artisanal Leather Footwear</div>
+          }
+          <div class="craft-guarantee-pill">
+            <span>✨ 100% Genuine Full-Grain Leather</span>
+          </div>
+        </div>
+
+        <div class="modal-details-column">
+          <div class="modal-header-meta">
+            <span class="modal-category brand-font">{{ selectedShoe.category || 'Atelier Collection' }}</span>
+            <h2 class="modal-title">{{ selectedShoe.name }}</h2>
+            <div class="modal-price-tag">{{ selectedShoe.price | currency:'ETB':'ETB ' }}</div>
+          </div>
+
+          <div class="modal-body-desc">
+            <h4>Bespoke Description</h4>
             <p>{{ selectedShoe.description }}</p>
           </div>
-          <button class="btn-primary w-100 mt-4 glow-button" (click)="cartService.addToCart(selectedShoe); closeShoeDetails()">Add to Cart</button>
+
+          <!-- Craftsmanship Highlights -->
+          <div class="craftsmanship-specs">
+            <h4>Atelier Specifications</h4>
+            <div class="specs-grid">
+              <div class="spec-item">
+                <span class="spec-bullet">◆</span>
+                <span>Hand-stitched Goodyear welted construction</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-bullet">◆</span>
+                <span>Full-grain Italian calfskin with memory insole</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-bullet">◆</span>
+                <span>Breathable vegetable-tanned leather lining</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-bullet">◆</span>
+                <span>Includes complimentary cedar shoe horn</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="size-selector-group">
+            <div class="size-header">
+              <span>Select EU Size</span>
+              <span class="size-guide-text">True to Italian Fit</span>
+            </div>
+            <div class="size-pill-group">
+              @for (size of availableSizes; track size) {
+                <button 
+                  class="size-pill" 
+                  [class.active]="selectedSize === size" 
+                  (click)="selectSize(size)">
+                  {{ size }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Modal Action -->
+          <div class="modal-cta-row">
+            <button 
+              class="btn-primary w-100 glow-button modal-cart-btn" 
+              (click)="handleAddToCart(selectedShoe); closeShoeDetails()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+              <span>Add to Bag • EU {{ selectedSize }}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 }
+
+<!-- Toast Feedback -->
+@if (addedToCartToast) {
+  <div class="luxury-toast glass-panel fade-in">
+    <div class="toast-icon">✓</div>
+    <div class="toast-message">{{ addedToCartToast }}</div>
+  </div>
+}
+

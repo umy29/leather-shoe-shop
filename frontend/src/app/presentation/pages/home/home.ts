@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ShoeService } from '../../../data/services/shoe';
 import { Shoe } from '../../../core/domain/models/shoe.model';
 import { CartService } from '../../../data/services/cart';
@@ -9,7 +10,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
@@ -19,19 +20,59 @@ export class Home implements OnInit, OnDestroy {
   signalRService = inject(SignalRService);
   
   shoes: Shoe[] = [];
-  menShoes: Shoe[] = [];
-  womenShoes: Shoe[] = [];
-  kidsShoes: Shoe[] = [];
   loading = true;
-  selectedCategory: string = 'Men';
+  selectedCategory: string = 'All';
+  searchQuery: string = '';
+  sortBy: 'featured' | 'price-low' | 'price-high' | 'name' = 'featured';
+  
   selectedShoe: Shoe | null = null;
+  selectedSize: number = 42;
+  availableSizes: number[] = [39, 40, 41, 42, 43, 44, 45];
+  
+  addedToCartToast: string | null = null;
   private subscription: Subscription | undefined;
+  private toastTimeout: any;
+
+  get categories(): string[] {
+    return ['All', 'Men', 'Women', 'Kids'];
+  }
+
+  get categoryCounts(): { [key: string]: number } {
+    return {
+      'All': this.shoes.length,
+      'Men': this.shoes.filter(s => s.category?.toLowerCase() === 'men').length,
+      'Women': this.shoes.filter(s => s.category?.toLowerCase() === 'women').length,
+      'Kids': this.shoes.filter(s => s.category?.toLowerCase() === 'kids').length
+    };
+  }
 
   get displayedShoes(): Shoe[] {
-    switch (this.selectedCategory) {
-      case 'Women': return this.womenShoes;
-      case 'Kids': return this.kidsShoes;
-      default: return this.menShoes;
+    let list = this.shoes;
+
+    // Filter by Category
+    if (this.selectedCategory !== 'All') {
+      list = list.filter(s => s.category?.toLowerCase() === this.selectedCategory.toLowerCase());
+    }
+
+    // Filter by Search Query
+    if (this.searchQuery.trim()) {
+      const q = this.searchQuery.toLowerCase().trim();
+      list = list.filter(s => 
+        s.name.toLowerCase().includes(q) || 
+        (s.description && s.description.toLowerCase().includes(q))
+      );
+    }
+
+    // Sort
+    switch (this.sortBy) {
+      case 'price-low':
+        return [...list].sort((a, b) => a.price - b.price);
+      case 'price-high':
+        return [...list].sort((a, b) => b.price - a.price);
+      case 'name':
+        return [...list].sort((a, b) => a.name.localeCompare(b.name));
+      default:
+        return list;
     }
   }
 
@@ -39,23 +80,50 @@ export class Home implements OnInit, OnDestroy {
     this.selectedCategory = category;
   }
 
+  scrollToCatalog() {
+    const catalogElement = document.getElementById('catalog-section');
+    if (catalogElement) {
+      catalogElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
   openShoeDetails(shoe: Shoe) {
     this.selectedShoe = shoe;
-    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    this.selectedSize = 42;
+    document.body.style.overflow = 'hidden';
   }
 
   closeShoeDetails() {
     this.selectedShoe = null;
-    document.body.style.overflow = ''; // Restore scrolling
+    document.body.style.overflow = '';
+  }
+
+  selectSize(size: number) {
+    this.selectedSize = size;
+  }
+
+  handleAddToCart(shoe: Shoe, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.cartService.addToCart(shoe);
+    this.showToast(`"${shoe.name}" added to your bespoke cart.`);
+  }
+
+  private showToast(msg: string) {
+    this.addedToCartToast = msg;
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+    }
+    this.toastTimeout = setTimeout(() => {
+      this.addedToCartToast = null;
+    }, 3000);
   }
 
   loadShoes() {
     this.shoeService.getShoes().subscribe({
       next: (shoes) => {
         this.shoes = shoes;
-        this.menShoes = shoes.filter(s => s.category === 'Men');
-        this.womenShoes = shoes.filter(s => s.category === 'Women');
-        this.kidsShoes = shoes.filter(s => s.category === 'Kids');
         this.loading = false;
       },
       error: () => {
@@ -75,5 +143,10 @@ export class Home implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+    if (this.toastTimeout) {
+      clearTimeout(this.toastTimeout);
+    }
+    document.body.style.overflow = '';
   }
 }
+
