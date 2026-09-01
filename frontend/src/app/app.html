@@ -1,5 +1,72 @@
+<div class="top-announcement">
+  <div class="container announcement-content">
+    <span>✨ Complimentary Bespoke Leather Care Kit with orders over 5,000 ETB • Handcrafted In Limited Batches</span>
+  </div>
+</div>
+
 <app-navbar></app-navbar>
+
 <main class="container">
   <router-outlet></router-outlet>
 </main>
+
+<footer class="boutique-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="brand-logo brand-font">LUXE LEATHER</div>
+        <p class="brand-tagline">
+          Handcrafted artisanal leather footwear. Each pair is meticulously cut, stitched, and finished by master cobblers honoring centuries of heritage leathercraft.
+        </p>
+        <div class="heritage-badge luxury-badge">
+          <span>Est. 2026 • Artisanal Atelier</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>The Atelier</h4>
+        <ul>
+          <li><a routerLink="/">Our Collection</a></li>
+          <li><a routerLink="/customer-auth">Client Portal</a></li>
+          <li><a routerLink="/checkout">Bespoke Checkout</a></li>
+          <li><a routerLink="/admin">Artisan Portal</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Craftsmanship</h4>
+        <ul>
+          <li><span>100% Full-Grain Italian Calfskin</span></li>
+          <li><span>Hand-Welted Construction</span></li>
+          <li><span>Orthopedic Memory Cork Insole</span></li>
+          <li><span>Lifetime Stitch Guarantee</span></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Join The Circle</h4>
+        <p class="newsletter-desc">Subscribe to receive private previews of seasonal capsule collections and bespoke releases.</p>
+        <div class="newsletter-box">
+          <input type="email" placeholder="Enter your email" class="newsletter-input">
+          <button class="btn-primary newsletter-btn">Join</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-divider"></div>
+      <div class="bottom-content">
+        <p>&copy; 2026 Luxe Leather Atelier. All rights reserved. Crafted with timeless precision.</p>
+        <div class="bottom-links">
+          <span>Bespoke Quality</span>
+          <span>•</span>
+          <span>Ethically Sourced</span>
+          <span>•</span>
+          <span>Global Delivery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
 <app-cart></app-cart>
