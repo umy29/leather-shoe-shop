@@ -35,8 +35,8 @@ body.light-mode .boutique-footer {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1.2fr 1.8fr;
-  gap: 40px;
+  grid-template-columns: 2.2fr 1fr 1.3fr;
+  gap: 50px;
   margin-bottom: 50px;
 }
 
