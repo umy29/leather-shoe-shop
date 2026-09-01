@@ -1,7 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { OrderService } from '../../../data/services/order';
 import { Order } from '../../../core/domain/models/order.model';
+import { SignalRService } from '../../../data/services/signalr.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-orders',
@@ -10,14 +12,25 @@ import { Order } from '../../../core/domain/models/order.model';
   templateUrl: './admin-orders.html',
   styleUrl: './admin-orders.css'
 })
-export class AdminOrders implements OnInit {
+export class AdminOrders implements OnInit, OnDestroy {
   orderService = inject(OrderService);
+  signalRService = inject(SignalRService);
   orders: Order[] = [];
   selectedOrder: Order | null = null;
   loading = true;
+  private subscription: Subscription | undefined;
 
   ngOnInit() {
     this.fetchOrders();
+    this.subscription = this.signalRService.ordersUpdated$.subscribe(() => {
+      this.fetchOrders();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   fetchOrders() {

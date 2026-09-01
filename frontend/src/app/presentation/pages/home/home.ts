@@ -1,8 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ShoeService } from '../../../data/services/shoe';
 import { Shoe } from '../../../core/domain/models/shoe.model';
 import { CartService } from '../../../data/services/cart';
+import { SignalRService } from '../../../data/services/signalr.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -11,9 +13,11 @@ import { CartService } from '../../../data/services/cart';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class Home implements OnInit {
+export class Home implements OnInit, OnDestroy {
   shoeService = inject(ShoeService);
   cartService = inject(CartService);
+  signalRService = inject(SignalRService);
+  
   shoes: Shoe[] = [];
   menShoes: Shoe[] = [];
   womenShoes: Shoe[] = [];
@@ -21,6 +25,7 @@ export class Home implements OnInit {
   loading = true;
   selectedCategory: string = 'Men';
   selectedShoe: Shoe | null = null;
+  private subscription: Subscription | undefined;
 
   get displayedShoes(): Shoe[] {
     switch (this.selectedCategory) {
@@ -44,7 +49,7 @@ export class Home implements OnInit {
     document.body.style.overflow = ''; // Restore scrolling
   }
 
-  ngOnInit() {
+  loadShoes() {
     this.shoeService.getShoes().subscribe({
       next: (shoes) => {
         this.shoes = shoes;
@@ -57,5 +62,18 @@ export class Home implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  ngOnInit() {
+    this.loadShoes();
+    this.subscription = this.signalRService.shoesUpdated$.subscribe(() => {
+      this.loadShoes();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

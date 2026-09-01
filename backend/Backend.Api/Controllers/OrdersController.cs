@@ -3,6 +3,8 @@ using Backend.Domain.Entities;
 using Backend.Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+using Backend.Api.Hubs;
 
 namespace Backend.Api.Controllers;
 
@@ -11,10 +13,12 @@ namespace Backend.Api.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly IHubContext<AppHub> _hubContext;
 
-    public OrdersController(AppDbContext context)
+    public OrdersController(AppDbContext context, IHubContext<AppHub> hubContext)
     {
         _context = context;
+        _hubContext = hubContext;
     }
 
     [HttpGet]
@@ -43,6 +47,7 @@ public class OrdersController : ControllerBase
 
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("OrdersUpdated");
 
         return CreatedAtAction(nameof(GetOrders), new { id = order.Id }, order);
     }
@@ -58,6 +63,7 @@ public class OrdersController : ControllerBase
 
         _context.Orders.Remove(order);
         await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("OrdersUpdated");
 
         return NoContent();
     }

@@ -4,6 +4,8 @@ using Backend.Application.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+using Backend.Api.Hubs;
 
 namespace Backend.Api.Controllers;
 
@@ -12,10 +14,12 @@ namespace Backend.Api.Controllers;
 public class ShoesController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly IHubContext<AppHub> _hubContext;
 
-    public ShoesController(AppDbContext context)
+    public ShoesController(AppDbContext context, IHubContext<AppHub> hubContext)
     {
         _context = context;
+        _hubContext = hubContext;
     }
 
     // GET: api/shoes
@@ -46,6 +50,7 @@ public class ShoesController : ControllerBase
     {
         _context.Shoes.Add(shoe);
         await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("ShoesUpdated");
 
         return CreatedAtAction(nameof(GetShoe), new { id = shoe.Id }, shoe);
     }
@@ -78,6 +83,7 @@ public class ShoesController : ControllerBase
             }
         }
 
+        await _hubContext.Clients.All.SendAsync("ShoesUpdated");
         return NoContent();
     }
 
@@ -94,6 +100,7 @@ public class ShoesController : ControllerBase
 
         _context.Shoes.Remove(shoe);
         await _context.SaveChangesAsync();
+        await _hubContext.Clients.All.SendAsync("ShoesUpdated");
 
         return NoContent();
     }
