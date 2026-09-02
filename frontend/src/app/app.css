@@ -129,6 +129,7 @@ body.light-mode .boutique-footer {
   color: var(--text-secondary);
   transition: all var(--transition-fast);
   text-decoration: none;
+  cursor: pointer;
 }
 
 .footer-col ul li a:hover {
